@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section" style="background-color: #4A869B"><h2 class="mb-3" style="color: #E3E8EA">SOS Resquests Issued :</h2></div>
+   {% for sos in SOSs.items %}
+    <article class="media content-section" >
+      <div class="media-body">
+        <div class="article-metadata">
+          <span class="mr-2">SOS# {{ sos.id }}</span>
+          <small class="text-muted">Time Issued: {{ sos.date_posted.strftime('%Y-%m-%d') }}</small>
+          <span class="text-muted">Location: {{ sos.location }}</span>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+    {% for page_num in SOSs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if SOSs.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('forum', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('forum', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+
+
+ <div class="content-section" style="text-align: center; padding-bottom: 20px; background-color: #4A869B" >
+  <h4 style="color: #E3E8EA">Click the button to get your coordinates.</h4>
+<button onclick="getLocation()" class="btn-cta" style="background-color: #F5E8E8"><span>Click Me</span></button>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(savePosition);
+    } 
+    else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
+    
+function savePosition(position) {
+ 
+    x.innerHTML="Latitude: " + position.coords.latitude + 
+   "<br>Longitude: " + position.coords.longitude;
+  var sql = "INSERT INTO SOS (location) VALUES ('Latitude: ' + position.coords.latitude + 'Longitude: ' + position.coords.longitude)";
+}
+
+</script>
+</div>
+
+{% endblock content %}

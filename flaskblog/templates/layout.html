@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>Flask Blog - {{ title }}</title>
+    {% else %}
+        <title>Flask Blog</title>
+    {% endif %}
+</head>
+<body>
+  <div id="page">
+    <header>
+      <nav class="fh5co-nav" role="navigation">
+        <div class="top-menu">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-2">
+                <div id="fh5co-logo"><a href="{{ url_for('home') }}">ResQ++<span>.</span></a></div>
+              </div>
+              <div class="col-xs-10 text-right menu-1">
+                <ul>
+                  <li><a href="{{ url_for('forum') }}">Forum</a></li>
+                  <li><a href="{{ url_for('about') }}">About Us</a></li>
+                  {% if current_user.is_authenticated %}
+                    <li  class="btn-cta"><a href="{{ url_for('new_post') }}"><span>New Post</span></a></li>
+                    <li  class="btn-cta"><a href="{{ url_for('account') }}"><span>Account</span></a></li>
+                     <li  class="btn-cta"><a href="{{ url_for('logout') }}"><span>Logout</span></a></li>
+                  {% else %}
+                    <li  class="btn-cta"><a href="{{ url_for('login') }}"><span>Login</span></a></li>
+                    <li  class="btn-cta"><a href="{{ url_for('register') }}"><span>Register</span></a></li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4" >
+          <div class="content-section" style="text-align: center; padding-bottom: 20px ">
+            {% if current_user.is_authenticated %}
+            {% else %}
+            <h3>Please Contribute in Saving Lives</h3>
+            <p><a class="btn btn-primary btn-lg" href="#"><span>I Want To Volunteer</span></a></p>
+            {% endif %}
+            <h3>Dial For Emergency</h3>
+            <span class="btn btn-primary btn-lg">123**123></span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="fh5co-footer" role="contentinfo">
+      <div class="container">
+        <div class="row row-pb-md">
+          <div class="col-md-3 col-md-push-1">
+            <h4>GhoulsInDevelopment</h4>
+            <ul><li>Dev Priya Goel</li><li>Tanya Chauhan</li><li>Satej Bagal</li></ul><
+          </div>
+        <div class="col-md-3 col-md-push-1">
+          <h4>Navigation</h4>
+          <ul class="fh5co-footer-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('forum') }}">Forum</a></li>
+            <li><a href="{{ url_for('about') }}">About Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3 col-md-push-1">
+          <h4>Contact Information</h4>
+          <ul class="fh5co-footer-links"></ul>
+        </div>
+
+        <div class="col-md-3 col-md-push-1"></div>
+
+      </div>
+
+      <div class="row copyright">
+        <div class="col-md-12 text-center"></div>
+      </div>
+
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>
